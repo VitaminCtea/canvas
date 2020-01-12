@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Canvas</title>
+	</head>
+	<body>
+		<div id="body">
+			<div>
+				<button id="start">start</button>
+				<button id="stop">stop</button>
+				<button id="clear">clear</button>
+			</div>
+			<canvas id="canvas" width="600" height="400"></canvas>
+			<ul>
+				<li>CanvasRenderingContext2D.setLineDash()</li>
+				<li>
+					Canvas 2D
+					API的CanvasRenderingContext2D接口的setLineDash()方法在填充线时使用虚线模式。
+				</li>
+				<li>它使用一组值来指定描述模式的线和间隙的交替长度。</li>
+				<li>
+					语法：
+					<ul>
+						<li>void ctx.setLineDash(segments);</li>
+					</ul>
+				</li>
+				<li>
+					segments:
+					<ul>
+						<li>
+							一个Array数组。一组描述交替绘制线段和间距（坐标空间单位）长度的数字。
+						</li>
+						<li>
+							如果数组元素的数量是奇数， 数组的元素会被复制并重复。例如， [5, 15, 25]
+							会变成 [5, 15, 25, 5, 15, 25]。
+						</li>
+					</ul>
+				</li>
+				<li>
+					返回值:
+					<ul>
+						<li>undefined</li>
+					</ul>
+				</li>
+				<li>
+					setLineDash方法规定虚线的特征，它的参数是一个具有两个元素的数组。
+					<ul>
+						<li>
+							第一个数组元素规定虚线尺寸，也就是我们可见的部分，比如上面的红色小线段。
+						</li>
+						<li>
+							第二个数组元素规定虚线与虚线之间的间隔，通过线段与间隔交替出现，构成了一个完整的虚线。
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<hr />
+			<ul>
+				<li>CanvasRenderingContext2D.lineDashOffset</li>
+				<li>
+					CanvasRenderingContext2D.lineDashOffset 是 Canvas 2D API
+					设置虚线偏移量的属性，例如可以实现 “蚂蚁线“ 的效果。
+				</li>
+				<li>
+					语法：
+					<ul>
+						<li>ctx.lineDashOffset = value;</li>
+					</ul>
+				</li>
+				<li>
+					value:
+					<ul>
+						<li>偏移量是float精度的数字。 初始值为 0.0。</li>
+						<li>value值为负值的时候为顺时针, 正值反之</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,19 @@
+export enum Colors {
+	aqua,
+	black,
+	blue,
+	fuchsia,
+	grey,
+	green,
+	lime,
+	maroon,
+	navy,
+	olive,
+	orange,
+	purple,
+	red,
+	silver,
+	teal,
+	yellow,
+	white
+}
