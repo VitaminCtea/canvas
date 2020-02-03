@@ -14,7 +14,7 @@ export namespace Font {
 	export type FontType = '10px sans-serif' | '15px sans-serif' | '20px sans-serif'
 }
 
-export enum ETextLayout {
+export enum ELayout {
 	LEFT_TOP,
 	RIGHT_TOP,
 	RIGHT_BOTTOM,
@@ -24,4 +24,16 @@ export enum ETextLayout {
 	RIGHT_MIDDLE,
 	CENTER_BOTTOM,
 	LEFT_MIDDLE
+}
+
+export enum EImageFillType {
+	STRETCH = 'stretch',
+	REPEAT = 'repeat',
+	REPEAT_X = 'repeat-x',
+	REPEAT_Y = 'repeat-y'
+}
+
+export interface Coordinates {
+	x: number
+	y: number
 }

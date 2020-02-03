@@ -58,3 +58,12 @@ export class Rectangle {
 		return new Rectangle(origin, size)
 	}
 }
+
+export class Math2D {
+	public static toRadian(degree: number): number {
+		return (degree / 180) * Math.PI
+	}
+	public static toDegree(radian: number): number {
+		return (radian / Math.PI) * 180
+	}
+}

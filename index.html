@@ -8,12 +8,72 @@
 	</head>
 	<body>
 		<div id="body">
-			<div>
+			<!-- <div>
 				<button id="start">start</button>
 				<button id="stop">stop</button>
 				<button id="clear">clear</button>
+			</div> -->
+			<div class="drawing">
+				<div class="controls">
+					<div class="controls1">
+						<div class="styleItem">
+							Stroke color:
+							<select id="strokeStyleSelect">
+								<option value="red">Red</option>
+								<option value="green">Green</option>
+								<option value="blue">Blue</option>
+								<option value="orange">Orange</option>
+								<option value="cornflowerblue">Cornflowerblue</option>
+								<option value="goldenrod">Goldenrod</option>
+								<option value="navy">Navy</option>
+								<option value="purple">Purple</option>
+							</select>
+						</div>
+						<div class="styleItem">
+							Fill color:
+							<select id="fillStyleSelect">
+								<option value="blue">Blue</option>
+							</select>
+						</div>
+					</div>
+					<div class="controls2">
+						<div class="item">
+							Start angle: <input type="text" class="angle" id="startAngleSelect" value="0"/>
+						</div>
+					</div>
+					<div class="controls3">
+						<div class="item">Fill: <input type="checkbox" class="fill" id="fillCheckbox" /></div>
+						<div class="item">
+							Edit: <input type="checkbox" class="edit" id="editCheckbox" />
+						</div>
+					</div>
+					<div class="controls4">
+						<div class="item">
+							<input
+								type="button"
+								value="Erase all"
+								id="eraseAllButton"
+							/>
+						</div>
+					</div>
+					<div class="controls5">
+						<div class="item">
+							Sides:
+							<select id="sidesSelect">
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<canvas id="canvas" width="800" height="600"></canvas>
 			</div>
-			<canvas id="canvas" width="600" height="400"></canvas>
 			<ul>
 				<li>CanvasRenderingContext2D.setLineDash()</li>
 				<li>
