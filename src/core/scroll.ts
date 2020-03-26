@@ -52,11 +52,6 @@ const translateOpen: string = 'translate' + (has3d ? '3d(' : '(')
 const translateClose: string = has3d ? ',0)' : ')'
 
 // ?helper
-/**
- * 获取父级中第一个满足可以滚动条件的元素
- * @param {Element} el
- * @return {Element}
- */
 
 let extend: <T, U>(origin: T, target: U) => void = (origin, target): void =>
 	Object.entries(origin).forEach(([key, value]) => (target[key] = value))
