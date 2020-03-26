@@ -11,27 +11,29 @@ const editCheckbox: HTMLInputElement = getDomId('editCheckbox') as HTMLInputElem
 const sidesSelect: HTMLSelectElement = getDomId('sidesSelect') as HTMLSelectElement
 const startAngleSelect: HTMLInputElement = getDomId('startAngleSelect') as HTMLInputElement
 
-let drawingSurfaceImagedata: ImageData
+let drawingSurfaceImagedata: ImageData // ?绘制表面图像数据
 
-const mousedown: { x: number; y: number } = { x: 0, y: 0 }
-const rubberbandRect: { width: number; height: number; left: number; top: number } = {
+const mousedown: { x: number; y: number } = { x: 0, y: 0 } // $鼠标信息
+const rubberBandRect: { width: number; height: number; left: number; top: number } = {
+	// *橡皮筋矩形信息
 	width: 0,
 	height: 0,
 	left: 0,
 	top: 0
 }
 
-let dragging: any
-let draggingOffsetX: undefined | number
-let draggingOffsetY: undefined | number
-let sides: number = 8
-let startAngle: number = 0
-let guidewires: boolean = true
-let editing: boolean = false
+let dragging: any // %移动标志位
+let draggingOffsetX: undefined | number // #移动偏移X轴
+let draggingOffsetY: undefined | number // #移动偏移Y轴
+let sides: string = sidesSelect.value // $默认八边形
+let startAngle: string = startAngleSelect.value // ?开始角度
+let isReticle: boolean = true // %十字线
+let isEditing: boolean = false // &是否处于编辑模式
 
-const polygons: Array<any> = []
+const polygons: Array<any> = [] // =图形储存器
 
 // $Functions
+// &画网格
 export function drawGrid(
 	context: CanvasRenderingContext2D = ctx,
 	color: string = 'lightgray',
@@ -58,6 +60,7 @@ export function drawGrid(
 	}
 }
 
+// #转换canvas坐标
 function windowToCanvas(
 	el: HTMLCanvasElement = canvas,
 	x: number,
@@ -70,58 +73,66 @@ function windowToCanvas(
 	}
 }
 
+// %保存canvas当前画的图形
 function saveDrawingSurface(context: CanvasRenderingContext2D = ctx): void {
 	const { width, height } = context.canvas
 	drawingSurfaceImagedata = context.getImageData(0, 0, width, height)
 }
 
+// -恢复canvas之前画的图形
 function restoreDrawingSurface(context: CanvasRenderingContext2D = ctx): void {
 	context.putImageData(drawingSurfaceImagedata, 0, 0)
 }
 
 // &Draw a polygon
+// =绘制一个多边形
 function drawPolygon(polygon: any, context: CanvasRenderingContext2D = ctx): void {
+	context.save()
 	context.beginPath()
 	polygon.createPath(context)
 	polygon.stroke(context)
 	if (fillCheckbox.checked) polygon.fill(context)
+	context.restore()
 }
 
 // ?rubber bands
-function updateRubberbandRectangle(loc: { x: number; y: number }): void {
-	rubberbandRect.width = Math.abs(loc.x - mousedown.x)
-	rubberbandRect.height = Math.abs(loc.x - mousedown.y)
-	rubberbandRect.left = Math.min(loc.x, mousedown.x)
-	rubberbandRect.top = Math.min(loc.y, mousedown.y)
+// *记录多边形信息
+function updateRubberBandRectangle(loc: { x: number; y: number }): void {
+	rubberBandRect.width = Math.abs(loc.x - mousedown.x)
+	rubberBandRect.height = Math.abs(loc.x - mousedown.y)
+	rubberBandRect.left = Math.min(loc.x, mousedown.x)
+	rubberBandRect.top = Math.min(loc.y, mousedown.y)
 }
 
-function drawRubberbandShape(
-	loc: { x: number; y: number },
-	sides: number,
-	startAngle: number,
+// &绘制
+function drawRubberBandShape(
+	sides: string,
+	startAngle: string,
 	context: CanvasRenderingContext2D = ctx
 ): void {
 	let polygon: Polygon = new Polygon(
-		mousedown.x,
-		mousedown.y,
-		rubberbandRect.width,
-		parseInt(sidesSelect.value, 10),
-		(parseInt(startAngleSelect.value, 10) * Math.PI) / 180,
-		context.strokeStyle,
-		context.fillStyle,
-		fillCheckbox.checked
+		mousedown.x, // ?鼠标按下的X轴坐标点
+		mousedown.y, // %鼠标按下的Y轴坐标点
+		rubberBandRect.width, // &默认以X轴差值为半径
+		parseInt(sides, 10), // #多边形的边数(默认0度)
+		(parseInt(startAngle, 10) * Math.PI) / 180, // -起始角度
+		context.strokeStyle, // =描边颜色
+		context.fillStyle, // *填充颜色
+		fillCheckbox.checked // !是否填充
 	)
-	drawPolygon(polygon)
-
+	drawPolygon(polygon) // &绘制多边形
+	// #如果不是编辑模式下，那么把当前图形推送到图形储存器中.(当需要恢复canvas之前的所有图形时，只需遍历即可)
 	if (!dragging) polygons.push(polygon)
 }
 
-function updateRubberband(loc: { x: number; y: number }, sides: number, startAngle: number): void {
-	updateRubberbandRectangle(loc)
-	drawRubberbandShape(loc, sides, startAngle)
+// $更新按下鼠标信息和多边形
+function updateRubberBand(loc: { x: number; y: number }, sides: string, startAngle: string): void {
+	updateRubberBandRectangle(loc)
+	drawRubberBandShape(sides, startAngle)
 }
 
-// =Guidewires
+// =Reticle
+// $绘制坐标横线(十字线)
 function drawHorizontalLine(y: number, context: CanvasRenderingContext2D = ctx): void {
 	context.beginPath()
 	context.moveTo(0, y + 0.5)
@@ -129,6 +140,7 @@ function drawHorizontalLine(y: number, context: CanvasRenderingContext2D = ctx):
 	context.stroke()
 }
 
+// %绘制坐标竖线
 function drawVerticalLine(x: number, context: CanvasRenderingContext2D = ctx): void {
 	context.beginPath()
 	context.moveTo(x + 0.5, 0)
@@ -136,7 +148,8 @@ function drawVerticalLine(x: number, context: CanvasRenderingContext2D = ctx): v
 	context.stroke()
 }
 
-function drawGuidewires(x: number, y: number, context: CanvasRenderingContext2D = ctx): void {
+// ?绘制十字线
+function drawReticle(x: number, y: number, context: CanvasRenderingContext2D = ctx): void {
 	context.save()
 	context.strokeStyle = 'rgba(0, 0, 230, 0.4)'
 	context.lineWidth = 0.5
@@ -145,6 +158,7 @@ function drawGuidewires(x: number, y: number, context: CanvasRenderingContext2D 
 	context.restore()
 }
 
+// #从图形储存器中依次取出之前的所有绘制的图形
 function drawPolygons(): void {
 	polygons.forEach((polygon: Polygon) => {
 		drawPolygon(polygon)
@@ -152,24 +166,33 @@ function drawPolygons(): void {
 }
 
 // %Dragging
+// *开始绘制(绘制模式下)
 function startDragging(loc: { x: number; y: number }): void {
 	saveDrawingSurface()
 	mousedown.x = loc.x
 	mousedown.y = loc.y
 }
 
-function starrEditing(): void {
+// &初始化编辑模式
+function startEditing(): void {
 	canvas.style.cursor = 'pointer'
-	editing = true
+	isEditing = true
 }
 
+// #取消编辑模式
 function stopEditing(): void {
 	canvas.style.cursor = 'crosshair'
-	editing = false
+	isEditing = false
 }
 
 // !Event handlers
 canvas.onmousedown = function(e: Event) {
+	// %Initialization
+	ctx.strokeStyle = strokeStyleSelect.value
+	ctx.fillStyle = fillStyleSelect.value
+
+	startAngleSelect.blur()
+
 	const loc: { x: number; y: number } = windowToCanvas(
 		canvas,
 		(e as any).clientX,
@@ -177,18 +200,20 @@ canvas.onmousedown = function(e: Event) {
 	)
 
 	e.preventDefault()
-	if (editing) {
+	if (isEditing) {
+		// ?如果是编辑模式下，那么就需要把之前的绘图信息取出来
 		polygons.forEach((polygon: Polygon) => {
 			polygon.createPath(ctx)
 			if (ctx.isPointInPath(loc.x, loc.y)) {
 				startDragging(loc)
 				dragging = polygon
-				draggingOffsetX = loc.x - polygon.x
-				draggingOffsetY = loc.y - polygon.y
+				draggingOffsetX = loc.x - polygon.x // *计算编辑的多边形在X轴上移动了多少
+				draggingOffsetY = loc.y - polygon.y // !计算编辑的多边形在X轴上移动了多少
 				return
 			}
 		})
 	} else {
+		// %不是编辑模式，那么就是单纯的绘制图形(当绘制图形时dragging = true)
 		startDragging(loc)
 		dragging = true
 	}
@@ -200,9 +225,9 @@ canvas.onmousemove = function(e: Event) {
 		(e as any).clientX,
 		(e as any).clientY
 	)
-
 	e.preventDefault()
-	if (editing && dragging) {
+	if (isEditing && dragging) {
+		// &说明有图形并且又在编辑模式下
 		dragging.x = loc.x - draggingOffsetX
 		dragging.y = loc.y - draggingOffsetY
 		ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -210,10 +235,10 @@ canvas.onmousemove = function(e: Event) {
 		drawPolygons()
 	} else {
 		if (dragging) {
-			restoreDrawingSurface()
-			updateRubberband(loc, sides, startAngle)
-			if (guidewires) {
-				drawGuidewires(mousedown.x, mousedown.y)
+			restoreDrawingSurface() // %恢复canvas之前画的图形(不排除有点击过eraseAllButton按钮的情况)
+			updateRubberBand(loc, sides, startAngle) // $绘制并且更新多边形信息(半径以及坐标)
+			if (isReticle) {
+				drawReticle(mousedown.x, mousedown.y)
 			}
 		}
 	}
@@ -227,9 +252,9 @@ canvas.onmouseup = function(e: Event) {
 	)
 
 	dragging = false
-	if (!editing) {
+	if (!isEditing) {
 		restoreDrawingSurface()
-		updateRubberband(loc, sides, startAngle)
+		updateRubberBand(loc, sides, startAngle)
 	}
 }
 
@@ -248,13 +273,15 @@ fillStyleSelect.onchange = function(e: Event) {
 }
 
 editCheckbox.onchange = function(e: Event) {
-	if (editCheckbox.checked) starrEditing()
+	if (editCheckbox.checked) startEditing()
 	else stopEditing()
 }
-
-// %Initialization
-// ctx.strokeStyle = strokeStyleSelect.value
-// ctx.fillStyle = fillStyleSelect.value
+sidesSelect.onchange = function(e: Event) {
+	sides = sidesSelect.value
+}
+startAngleSelect.onchange = function(e: Event) {
+	startAngle = startAngleSelect.value
+}
 
 // ctx.shadowColor = 'rgba(0, 0, 0, 0.4)'
 // ctx.shadowOffsetX = 2

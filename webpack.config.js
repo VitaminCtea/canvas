@@ -44,9 +44,12 @@ module.exports = {
                 loader: 'ts-loader'
             },
             {
-                test: /\.js$/,
+                test: /\.jsx?$/,
                 exclude: /node_modules/,
-                loader: 'babel-loader'
+				loader: 'babel-loader',
+				options: {
+					presets: ['@babel/preset-env']
+				}
             },
             {
                 test: /\.(sa|sc|c)ss$/,
@@ -75,7 +78,7 @@ module.exports = {
                     }
                 ]
             }
-        ]
+		]
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -87,6 +90,6 @@ module.exports = {
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         // Use NoErrorsPlugin for webpack 1.x
-        new webpack.NoEmitOnErrorsPlugin()
+		new webpack.NoEmitOnErrorsPlugin(),
     ]
 }

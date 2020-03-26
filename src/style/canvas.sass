@@ -39,3 +39,53 @@ body
 								background-color: transparent
 				.controls#{ $i }
 					padding-right: 10px
+		#thrusterCanvas
+            background: rgba(0, 0, 0, 0)
+            position: absolute
+            left: 330px
+            top: 400px
+            padding: 5px
+		.function
+			.floatingControls
+				background-color: rgba(0, 0, 0, 0.1)
+				border: thin solid skyblue
+				-webkit-box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 4px
+				-moz-box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 4px
+				box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 4px
+				padding: 15px
+				font:
+					size: 12px
+					family: '苹方字体'
+				output
+					color: blue
+			#scoreboard
+				background-color: rgba(255, 255, 255, 0.5)
+				position: absolute
+				left: 755px
+				top: 120px
+				color: blue
+				font-size: 18px
+				padding: 5px
+			#controls
+				position: absolute
+				left: 285px
+				top: 100px
+	#wrapper
+		width: 600px
+		height: 300px
+		overflow: hidden
+		user-select: none
+		#move
+			border: thin solid red
+			width: 100%
+			box-sizing: border-box
+			.itemRow
+				box-sizing: border-box
+				padding: 10px 20px
+				width: 100%
+				height: 40px
+				background-color: bisque
+				text-align: center
+				line-height: 20px
+				&:first-child
+					margin-top: 10px

@@ -24,7 +24,7 @@ export class Polygon {
 		centerY: number,
 		radius: number,
 		sides: number,
-		startAngle: number,
+		startAngle: number = 0,
 		strokeStyle: string | CanvasGradient | CanvasPattern,
 		fillStyle: string | CanvasGradient | CanvasPattern,
 		filled: boolean
@@ -40,7 +40,7 @@ export class Polygon {
 	}
 	getPoints(): Array<Point> {
 		const points: Array<Point> = []
-		let angle: number = this.startAngle || 0
+		let angle: number = this.startAngle
 		for (let i: number = 0; i < this.sides; i++) {
 			points.push(
 				Point.create(
@@ -62,18 +62,22 @@ export class Polygon {
 		context.closePath()
 	}
 	stroke(context: CanvasRenderingContext2D): void {
-		context.save()
-		this.createPath(context)
-		context.strokeStyle = this.strokeStyle
-		context.stroke()
-		context.restore()
+		if (!this.filled) {
+			context.save()
+			this.createPath(context)
+			context.strokeStyle = this.strokeStyle
+			context.stroke()
+			context.restore()
+		}
 	}
 	fill(context: CanvasRenderingContext2D): void {
-		context.save()
-		this.createPath(context)
-		context.fillStyle = this.fillStyle
-		context.fill()
-		context.restore()
+		if (this.filled) {
+			context.save()
+			this.createPath(context)
+			context.fillStyle = this.fillStyle
+			context.fill()
+			context.restore()
+		}
 	}
 	move(x: number, y: number): void {
 		this.x = x

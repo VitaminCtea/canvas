@@ -7,12 +7,12 @@ module.exports = function(api) {
 				useBuiltIns: 'usage'
 			}
 		],
-		[ '@babel/preset-typescript' ]
+		'@babel/preset-typescript'
 	]
 	const plugins = [
-        '@babel/plugin-transform-arrow-functions', 
+        '@babel/plugin-transform-arrow-functions',
         '@babel/plugin-transform-runtime',
-        '@babel/plugin-transform-typescript'
+		'@babel/plugin-transform-typescript',
     ]
 
 	return {

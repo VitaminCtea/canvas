@@ -18,49 +18,55 @@
 					<div class="controls1">
 						<div class="styleItem">
 							Stroke color:
-							<select id="strokeStyleSelect">
+							<select id="strokeStyleSelect" style="width: 100px;">
 								<option value="red">Red</option>
 								<option value="green">Green</option>
 								<option value="blue">Blue</option>
 								<option value="orange">Orange</option>
 								<option value="cornflowerblue">Cornflowerblue</option>
+								<option value="goldenrod" selected>Goldenrod</option>
+								<option value="navy">Navy</option>
+								<option value="purple" selected>Purple</option>
+							</select>
+						</div>
+						<div class="styleItem">
+							Fill color:
+							<select id="fillStyleSelect" style="width: 124px;">
+								<option value="red">Red</option>
+								<option value="green">Green</option>
+								<option value="blue">Blue</option>
+								<option value="orange">Orange</option>
+								<option value="cornflowerblue" selected>Cornflowerblue</option>
 								<option value="goldenrod">Goldenrod</option>
 								<option value="navy">Navy</option>
 								<option value="purple">Purple</option>
 							</select>
 						</div>
-						<div class="styleItem">
-							Fill color:
-							<select id="fillStyleSelect">
-								<option value="blue">Blue</option>
-							</select>
-						</div>
 					</div>
 					<div class="controls2">
 						<div class="item">
-							Start angle: <input type="text" class="angle" id="startAngleSelect" value="0"/>
+							Start angle:
+							<input type="text" class="angle" id="startAngleSelect" value="0" />
 						</div>
 					</div>
 					<div class="controls3">
-						<div class="item">Fill: <input type="checkbox" class="fill" id="fillCheckbox" /></div>
+						<div class="item">
+							Fill: <input type="checkbox" class="fill" id="fillCheckbox" />
+						</div>
 						<div class="item">
 							Edit: <input type="checkbox" class="edit" id="editCheckbox" />
 						</div>
 					</div>
 					<div class="controls4">
 						<div class="item">
-							<input
-								type="button"
-								value="Erase all"
-								id="eraseAllButton"
-							/>
+							<input type="button" value="Erase all" id="eraseAllButton" />
 						</div>
 					</div>
 					<div class="controls5">
 						<div class="item">
 							Sides:
 							<select id="sidesSelect">
-								<option value="3">3</option>
+								<option value="3" selected>3</option>
 								<option value="4">4</option>
 								<option value="5">5</option>
 								<option value="6">6</option>
@@ -72,7 +78,56 @@
 						</div>
 					</div>
 				</div>
-				<canvas id="canvas" width="800" height="600"></canvas>
+				<div id="filterContainer" class="function">
+					<div>
+						<label for="negative">负片滤镜</label>
+						<input type="radio" id="negative" name="filter" value="negative" />
+					</div>
+					<div>
+						<label for="blackAndWhite">黑白滤镜</label>
+						<input type="radio" id="blackAndWhite" name="filter" value="blackAndWhite" />
+					</div>
+					<div>
+						<label for="emboss">浮雕滤镜</label>
+						<input type="radio" id="emboss" name="filter" value="emboss" />
+					</div>
+					<div>
+						<label for="sunglasses">墨镜滤镜</label>
+						<input type="radio" id="sunglasses" name="filter" value="sunglasses" />
+					</div>
+					<div>
+						<label for="default">默认图片</label>
+						<input type="radio" id="default" name="filter" value="default" checked />
+					</div>
+					<div>
+						<input type="button" id="animateButton" value="Animate">
+					</div>
+					<div>
+						<input id='explosionButton' type='button' value='kaboom'/>
+					</div>
+					<div id="scoreboard" class="floatingControls">计分板: 0</div>
+					<div id="controls" class="floatingControls">
+						Launch velocity (m/s):
+						<output id="launchVelocityOutput"></output> m/s<br />
+						Launch angle (degrees):
+						<output id="launchAngleOutput"></output> degrees<br />
+					</div>
+					<div id='motionControls' class='controls'>
+						<div id='motionRadios'>
+						   <input type='radio' name='motion' id='linearCheckbox' checked/>Linear<br>
+						   <input type='radio' name='motion' id='easeInCheckbox'/>Ease In<br>
+						   <input type='radio' name='motion' id='easeOutCheckbox'/>Ease Out<br>
+						   <input type='radio' name='motion' id='easeInOutCheckbox'/>Ease In/Out<br>
+						   <input type='radio' name='motion' id='elasticCheckbox'/>Elastic<br>
+						   <input type='radio' name='motion' id='bounceCheckbox'/>Bounce<br>
+						</div>
+					 </div>
+				</div>
+				<canvas id="canvas" width="800" height="600">canvas not supported</canvas>
+				<canvas id='thrusterCanvas' width='100' height='100'>canvas not supported</canvas>
+			</div>
+			<div id="wrapper">
+				<div id="move"></div>
 			</div>
 			<ul>
 				<li>CanvasRenderingContext2D.setLineDash()</li>
